@@ -1,4 +1,0 @@
-1 fire
-2 water
-3 eletric
-4 grass
