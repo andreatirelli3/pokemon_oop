@@ -1,4 +1,4 @@
-1 Fire
-2 Water
-3 Eletric
-4 Grass
+1 fire
+2 water
+3 eletric
+4 grass
