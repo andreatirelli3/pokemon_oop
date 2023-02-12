@@ -1,69 +1,106 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class BattleController {
-    private Pokemon userPokemon;
-    private Pokemon computerPokemon;
+    private List<Pokemon> userSquad;
+    private List<Pokemon> computerSquad;
     private Pokedex pokedex;
 
-    public BattleController(Pokemon userPokemon, Pokemon computerPokemon) {
-        this.userPokemon = userPokemon;
-        this.computerPokemon = computerPokemon;
+    public BattleController() {
         this.pokedex = new Pokedex();
+        selectUserPokemonSquad();
+        selectComputerPokemonSquad();  
         // this.pokedex = Pokedex.getInstance();
-  }
+    }
 
-    public void start() {
-        Scanner input = new Scanner(System.in);
-
-        while (userPokemon.getCurrentHP() > 0 && computerPokemon.getCurrentHP() > 0) {
-            displayStatus();
-
-            System.out.println("Choose a move:");
-            Move selectedMove = selectMove();
-            userPokemon.useMove(selectedMove, computerPokemon);
-
-            System.out.println();
-            System.out.println(userPokemon.getName() + " used " + selectedMove.getName() + "!");
-
-            if (computerPokemon.getCurrentHP() > 0) {
-                Move computerMove = computerPokemon.getMoves().get(0);
-                computerPokemon.useMove(computerMove, userPokemon);
-
-                System.out.println(computerPokemon.getName() + " used " + computerMove.getName() + "!");
+    private void selectUserPokemonSquad() {
+        userSquad = new ArrayList<Pokemon>();
+        
+        System.out.println("Please select your 3 Pokemon from the Pokedex:");
+        pokedex.printPokedex();
+    
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < 3; i++) {
+            System.out.print("Enter Pokemon name: ");
+            String name = scanner.nextLine();
+            Pokemon selectedPokemon = pokedex.getPokemonByName(name);
+    
+            if (selectedPokemon != null) {
+                // add the selected pokemon to user's squad
+                userSquad.add(selectedPokemon);
+            } else {
+                System.out.println("Invalid Pokemon name! Try again.");
+                i--;
             }
-
-            System.out.println();
         }
-
-        displayResult();
     }
+    
+    private void selectComputerPokemonSquad() {
+        computerSquad = new ArrayList<Pokemon>();
 
-    private void displayStatus() {
-        System.out.println("Your Pokemon: " + userPokemon.getName());
-        System.out.println("HP: " + userPokemon.getCurrentHP() + "/" + userPokemon.getMaxHP());
-        System.out.println("Opponent's Pokemon: " + computerPokemon.getName());
-        System.out.println("HP: " + computerPokemon.getCurrentHP() + "/" + computerPokemon.getMaxHP());
-        System.out.println();
-    }
-
-    private Move selectMove() {
-        Scanner input = new Scanner(System.in);
-
-        for (int i = 0; i < userPokemon.getMoves().size(); i++) {
-            Move move = userPokemon.getMoves().get(i);
-            System.out.println((i + 1) + ": " + move.getName());
+        System.out.println("Computer is selecting its Pokemon squad...");
+        Random random = new Random();
+    
+        for (int i = 0; i < 3; i++) {
+            int index = random.nextInt(pokedex.getPokemonList().size());
+            Pokemon selectedPokemon = pokedex.getPokemonList().get(index);
+    
+            if (!computerSquad.contains(selectedPokemon)) {
+                computerSquad.add(selectedPokemon);
+            } else {
+                i--;
+            }
         }
-
-        int moveIndex = input.nextInt() - 1;
-        return userPokemon.getMoves().get(moveIndex);
     }
 
-    private void displayResult() {
-        if (userPokemon.getCurrentHP() > 0) {
-            System.out.println("You win!");
+    public void startBattle() {
+        System.out.println("The battle starts now!");
+        int userSquadIndex = 0;
+        int computerSquadIndex = 0;
+        
+        while (!userSquadExhausted(userSquadIndex) && !computerSquadExhausted(computerSquadIndex)) {
+            Pokemon userPokemon = userSquad.get(userSquadIndex);
+            Pokemon computerPokemon = computerSquad.get(computerSquadIndex);
+            
+            System.out.println("Your turn, select a move for " + userPokemon.getName() + ":");
+            userPokemon.printMoves();
+            
+            Scanner scanner = new Scanner(System.in);
+            int moveIndex = scanner.nextInt();
+            Move selectedMove = userPokemon.getMoves().get(moveIndex);
+            
+            computerPokemon.takeDamage(selectedMove.getDamage());
+            System.out.println(computerPokemon.getName() + " took " + selectedMove.getDamage() + " damage.");
+            
+            if (computerPokemon.isExhausted()) {
+                System.out.println(computerPokemon.getName() + " has fainted.");
+                computerSquadIndex++;
+            } else {
+                userPokemon.takeDamage(computerPokemon.getSelectedMove().getDamage());
+                System.out.println(userPokemon.getName() + " took " + computerPokemon.getSelectedMove().getDamage() + " damage.");
+                
+                if (userPokemon.isExhausted()) {
+                    System.out.println(userPokemon.getName() + " has fainted.");
+                    userSquadIndex++;
+                }
+            }
+        }
+        
+        if (userSquadExhausted(userSquadIndex)) {
+            System.out.println("Computer wins!");
         } else {
-            System.out.println("You lose...");
+            System.out.println("You win!");
         }
+    }
+    
+    private boolean userSquadExhausted(int userSquadIndex) {
+        return userSquad.size() == userSquadIndex;
+    }
+    
+    private boolean computerSquadExhausted(int computerSquadIndex) {
+        return computerSquad.size() == computerSquadIndex;
     }
 
 }

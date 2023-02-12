@@ -45,7 +45,23 @@ public class Pokemon {
       currentHP -= damage;
     }
 
+    public boolean isExhausted() {
+      return currentHP <= 0;
+    }
     
+    public Move getSelectedMove() {
+        // You can select a move randomly or based on some other logic
+        int randomIndex = (int)(Math.random() * moves.size());
+        return moves.get(randomIndex);
+    }
+    
+    public void printMoves() {
+        System.out.println("Available moves:");
+        for (int i = 0; i < moves.size(); i++) {
+            System.out.println(i + ": " + moves.get(i).getName());
+        }
+    }
+  
     public void printPokemon() {
       System.out.println("Pokemon name: " + name);
       System.out.println("Pokemon type: " + type);

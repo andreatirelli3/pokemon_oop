@@ -60,6 +60,15 @@ public class Pokedex {
         return instance;
     }
 
+    public Pokemon getPokemonByName(String name) {
+        for (Pokemon pokemon : pokemonList) {
+            if (pokemon.getName().equalsIgnoreCase(name)) {
+                return pokemon;
+            }
+        }
+        return null;
+    }
+
     public void printPokedex() {
         for (Pokemon pokemon : pokemonList) {
             pokemon.printPokemon();
