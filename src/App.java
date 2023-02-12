@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class App {
 
     public static void main(String[] args) {
+
         List<Move> userMoves = new ArrayList<>();
         userMoves.add(new Move("Ember", Type.FIRE, 10));
         userMoves.add(new Move("Quick Attack", Type.NORMAL, 5));

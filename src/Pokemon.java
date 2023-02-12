@@ -45,5 +45,9 @@ public class Pokemon {
       currentHP -= damage;
     }
 
-    // getters and setters omitted for brevity
+    
+    public void printPokemon() {
+      System.out.println("Pokemon name: " + name);
+      System.out.println("Pokemon type: " + type);
+    }
   }
