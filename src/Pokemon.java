@@ -6,7 +6,7 @@ public class Pokemon {
     private int maxHP;
     private int currentHP;
     private List<Move> moves;
-  
+
     public Pokemon(String name, Type type, int maxHP, List<Move> moves) {
       this.name = name;
       this.type = type;
@@ -35,15 +35,15 @@ public class Pokemon {
         return moves;
     }
 
-  
+
     public void useMove(Move move, Pokemon target) {
       int damage = move.getDamage();
       target.takeDamage(damage);
     }
-  
+
     public void takeDamage(int damage) {
       currentHP -= damage;
     }
-  
+
     // getters and setters omitted for brevity
   }
