@@ -1,14 +1,26 @@
 import java.util.Arrays;
 import java.util.List;
 
+/*
+ * Classe che rappresenta il pokedex
+ */
 public class Pokedex {
+    // Singleton instance, rende la classe un singleton, ovvero una classe che può avere solo un'istanza in memoria
     private static Pokedex instance = null;
+
+    // Lista dei pokemon
     private List<Pokemon> pokemonList;
 
+    /*
+     * Costruttore di default della classe
+     */
     public Pokedex() {
         this.pokemonList = loadPokedex();
     }
 
+    /*
+     * Metodo che carica il pokedex
+     */
     private List<Pokemon> loadPokedex() {
         Pokemon pikachu = new Pokemon("Pikachu", Type.ELECTRIC, 35, 
             Arrays.asList(new Move("Thunder Shock", Type.ELECTRIC, 40), 
@@ -49,10 +61,16 @@ public class Pokedex {
         return Arrays.asList(pikachu, charmander, bulbasaur, squirtle, raichu, charmeleon, ivysaur, wartortle, sandshrew);      
     }
 
+    /*
+     * Restituisce la lista dei pokemon
+     */
     public List<Pokemon> getPokemonList() {
         return pokemonList;
     }
 
+    /*
+     * Restituisce l'istanza del pokedex
+     */
     public static Pokedex getInstance() {
         if (instance == null) {
             instance = new Pokedex();
@@ -60,6 +78,9 @@ public class Pokedex {
         return instance;
     }
 
+    /*
+     * Restituisce il pokemon con il nome specificato
+     */
     public Pokemon getPokemonByName(String name) {
         for (Pokemon pokemon : pokemonList) {
             if (pokemon.getName().equalsIgnoreCase(name)) {
@@ -69,6 +90,9 @@ public class Pokedex {
         return null;
     }
 
+    /*
+     * Stampa il pokedex
+     */
     public void printPokedex() {
         for (Pokemon pokemon : pokemonList) {
             pokemon.printPokemon();
