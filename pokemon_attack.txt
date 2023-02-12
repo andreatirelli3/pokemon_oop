@@ -1,0 +1,16 @@
+1 1 fire_blast true 130
+2 1 flamethrower true 90
+3 1 heat_wave true 95
+4 1 fire_heal false 50
+5 2 hydro_pump true 110
+6 2 surf true true 90
+7 2 waterfall true 80
+8 2 aqua_ring false 20
+9 3 thunderbolt trrue 90
+10 3 thunder_shock true 50
+11 3 volt_switch true 70
+12 3 thunder_wave false 10
+13 4 solar_beam true 120
+14 4 leaf_blade true 90
+15 4 giga_drain true 75
+16 4 ingrain false 20
